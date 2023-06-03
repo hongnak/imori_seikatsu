@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1009702797568",
+    "project_id": "imori-seikatsu",
+    "storage_bucket": "imori-seikatsu.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1009702797568:android:74957c6ef9ebf39f2873e5",
+        "android_client_info": {
+          "package_name": "com.example.imori_seikatsu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1009702797568-7ni0nrnjkhifr9g48434o7iufp259qvo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVBuu3YV1u-DPeiu8ah3se-smcbgE2amE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1009702797568-7ni0nrnjkhifr9g48434o7iufp259qvo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
