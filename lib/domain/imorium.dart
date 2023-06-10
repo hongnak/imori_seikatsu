@@ -26,4 +26,5 @@ class Imorium {
   Timestamp lastAddWaterDate;
   Timestamp lastSprayDate;
   Timestamp lastFilterExchangeDate;
+  String collectionName = 'imorium';
 }

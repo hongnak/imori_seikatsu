@@ -2,8 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:imori_seikatsu/my_data_detail/my_data_detail_page.dart';
 import 'package:imori_seikatsu/my_tank/my_tank_page.dart';
 import 'package:imori_seikatsu/reminder/reminder_page.dart';
+import 'package:imori_seikatsu/setting/setting_page.dart';
 import 'calendar/calendar_page.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -44,7 +46,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Widget> _pageList = [const MyTankPage(), const CalendarPage(), const ReminderPage()];
-  final List<String> _topLabelList = ['My水槽', 'カレンダー', 'リマインダ'];
+  final List<String> _topLabelList = ['Myアクアリウム', 'カレンダー', 'リマインダ'];
   int selectedIndex = 0;
   final _auth = FirebaseAuth.instance;
 
@@ -75,6 +77,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(_topLabelList[selectedIndex]),
         centerTitle: true,
         actions: [
+          selectedIndex == 0
+              ?
+          IconButton(
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (_) => const SettingPage()));
+              },
+              icon: const Icon(Icons.settings)
+          )
+              :
           IconButton(onPressed: () {}, icon: const Icon(Icons.sort))
         ],
       ),

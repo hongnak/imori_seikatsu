@@ -10,4 +10,5 @@ class Creature {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'creature';
 }

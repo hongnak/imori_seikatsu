@@ -7,4 +7,5 @@ class WaterChange {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'waterChange';
 }

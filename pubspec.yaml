@@ -50,6 +50,7 @@ dependency_overrides:
   shared_preferences: ^2.1.0
   intl: ^0.18.1
   table_calendar: ^3.0.9
+  numberpicker: ^2.1.2
 
 dev_dependencies:
   flutter_test:

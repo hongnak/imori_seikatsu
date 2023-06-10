@@ -7,4 +7,5 @@ class Feed {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'feed';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:imori_seikatsu/add_imorium/add_imorium_page.dart';
+import 'package:imori_seikatsu/common.dart';
 import 'package:imori_seikatsu/domain/imorium.dart';
 import 'package:imori_seikatsu/my_tank/my_tank_model.dart';
 import 'package:imori_seikatsu/my_tank_detail/my_tank_detail_page.dart';
@@ -47,6 +48,7 @@ class MyTankPage extends StatelessWidget {
                   }
                   model.fetchImoriumList();
                 },
+
                 child: Column(
                   children: <Widget>[
                     Row(

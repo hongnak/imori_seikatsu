@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:imori_seikatsu/add_data/add_data_page.dart';
+import 'package:imori_seikatsu/common.dart';
+import 'package:imori_seikatsu/my_data_detail/my_data_detail_page.dart';
+import '../../domain/imorium.dart';
 
-Widget creatureAndPlantContainer(List<dynamic> dataList, String label) {
+Widget creatureAndPlantContainer(List<dynamic> dataList, String label, BuildContext context, Imorium imorium, dynamic model) {
+  SnackBar snackBar(String text) {
+    final snackBar = SnackBar(backgroundColor: Colors.green, content: Text(text));
+    return snackBar;
+  }
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
   Widget widget = Column(
     children: [
       Row(
@@ -8,7 +17,23 @@ Widget creatureAndPlantContainer(List<dynamic> dataList, String label) {
         children: [
           Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           IconButton(
-            onPressed: () {},
+            onPressed: () async {
+              switch (label) {
+                case '生き物':
+                  dataKind = DataKind.creature;
+                  break;
+                case '水草':
+                  dataKind = DataKind.plant;
+                  break;
+                default:
+                  break;
+              }
+              final bool? added = await Navigator.push(context, MaterialPageRoute(builder: (context) => AddDataPage(dataList: dataList, label: label, imorium: imorium), fullscreenDialog: true));
+              if (added != null && added) {
+                scaffoldMessenger.showSnackBar(snackBar('記録しました'));
+              }
+              model.fetchData();
+            },
             icon: const Icon(Icons.add, color: Colors.grey, size: 18.0),
           )
         ],
@@ -40,9 +65,27 @@ Widget creatureAndPlantContainer(List<dynamic> dataList, String label) {
                           padding: const EdgeInsets.all(2.0),
                           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.grey[200]), child: const Center(child: Text('No Image'))
                       ),
-                      onTap: () {
-                        //setDataKind(title);
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDataPage(data: dataList[i], tankName: tankName, kind: title, tankID: id)));
+                      onTap: () async {
+                        switch (label)  {
+                          case '生き物':
+                            dataKind = DataKind.creature;
+                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                            if (deleted != null && deleted) {
+                              scaffoldMessenger.showSnackBar(snackBar('削除しました'));
+                            }
+                            model.fetchData();
+                            break;
+                          case '水草':
+                            dataKind = DataKind.plant;
+                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                            if (deleted != null && deleted) {
+                              scaffoldMessenger.showSnackBar(snackBar('削除しました'));
+                            }
+                            model.fetchData();
+                            break;
+                          default:
+                            break;
+                        }
                       },
                     ),
                     Text(dataList[i].name, overflow: TextOverflow.ellipsis)
@@ -52,27 +95,21 @@ Widget creatureAndPlantContainer(List<dynamic> dataList, String label) {
                 itemCount: dataList.length
             ),
           ),
-          //addDataButtonWidget(model, context, title, id, lastWaterChangeDate, lastFeedDate)
         ],
       )
           :
-      Column(
+      const Column(
         children: [
-          Container(
-              // alignment: Alignment.center,
-              // padding: const EdgeInsets.all(2),
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 20.0),
-                child: Column(
-                  children: [
-                    CircleAvatar(child: Icon(Icons.emoji_food_beverage)),
-                    SizedBox(height: 5.0),
-                    Text('登録がありません', style: TextStyle(fontSize: 11, color: Colors.grey)),
-                  ],
-                ),
-              )
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 20.0),
+            child: Column(
+              children: [
+                CircleAvatar(child: Icon(Icons.emoji_food_beverage)),
+                SizedBox(height: 5.0),
+                Text('登録がありません', style: TextStyle(fontSize: 11, color: Colors.grey)),
+              ],
+            ),
           ),
-          //addDataButtonWidget(model, context, title, id, lastWaterChangeDate, lastFeedDate)
         ],
       ),
     ],

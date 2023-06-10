@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:imori_seikatsu/common.dart';
 import 'package:intl/intl.dart';
-import '../../domain/imorium.dart';
 
-Widget detailDataWidget(Imorium imorium, BuildContext context) {
+Widget detailDataWidget(dynamic data, BuildContext context, String label) {
 
   double imgWidth = MediaQuery.of(context).size.width;
   double imgHeight = MediaQuery.of(context).size.height*0.35;
@@ -12,130 +12,124 @@ Widget detailDataWidget(Imorium imorium, BuildContext context) {
 
   Widget widget = Column(
     children: [
-      imorium.imgURL != ''
-          ?
-      Container(
-          width: imgWidth,
-          height: imgHeight,
-          decoration: BoxDecoration(shape: BoxShape.rectangle, image: DecorationImage(image: NetworkImage(imorium.imgURL), fit: BoxFit.cover))
-      )
-          :
-      Container(
-          width: imgWidth,
-          height: imgHeight,
-          color: Colors.grey[200], child: const Center(child: Text('No Image'))
-      ),
+      if (dataKind == DataKind.imorium || dataKind == DataKind.creature || dataKind == DataKind.plant || dataKind == DataKind.diary)
+        data.imgURL != ''
+            ?
+        Container(
+            width: imgWidth,
+            height: imgHeight,
+            decoration: BoxDecoration(shape: BoxShape.rectangle, image: DecorationImage(image: NetworkImage(data.imgURL), fit: BoxFit.cover))
+        )
+            :
+        Container(
+            width: imgWidth,
+            height: imgHeight,
+            color: Colors.grey[200], child: const Center(child: Text('No Image'))
+        ),
       const SizedBox(height: 15),
-      Divider(color: Colors.grey[200]),
-      Row(
+      if (dataKind == DataKind.imorium || dataKind == DataKind.creature)
+        Column(
           children: [
-            SizedBox(width: labelWidth, child: const Text('サイズ', style: TextStyle(fontSize: 14))),
-            Text(imorium.size, style: const TextStyle(fontSize: 14.0))]
-      ),
-      Divider(color: Colors.grey[200]),
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: const Text('名前', style: TextStyle(fontSize: 14))),
+                  Text(data.name, style: TextStyle(fontSize: detailFontSize))
+                ]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.imorium )
+        Column(
+          children: [
+            Row(
+              children: [
+                SizedBox(width: labelWidth, child: const Text('サイズ', style: TextStyle(fontSize: 14))),
+                Text(data.size, style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.creature )
+        Column(
+          children: [
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: const Text('カテゴリー', style: TextStyle(fontSize: 14))),
+                  Text(data.category, style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.creature || dataKind == DataKind.plant)
+        Column(
+          children: [
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: const Text('種類', style: TextStyle(fontSize: 14))),
+                  Text(data.kind, style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.waterChange || dataKind == DataKind.feed)
+        Column(
+          children: [
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: Text('$label量', style: const TextStyle(fontSize: 14))),
+                  Text(data.amount, style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.temperature || dataKind == DataKind.ph)
+        Column(
+          children: [
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: Text(label, style: const TextStyle(fontSize: 14))),
+                  Text(data.amount.toString(), style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
+      if (dataKind == DataKind.diary)
+        Column(
+          children: [
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(width: labelWidth, height: 120, child: const Text('日記', style: TextStyle(fontSize: 14))),
+                  SizedBox(width: memoWidth, child: Text(data.amount, maxLines: 30, overflow: TextOverflow.ellipsis))
+                ]
+            ),
+            Divider(color: Colors.grey[200]),
+          ],
+        ),
       Row(
           children: [
             SizedBox(width: labelWidth, child: const Text('登録日', style: TextStyle(fontSize: 14))),
-            Text(DateFormat.yMMMEd('ja').format(imorium.registrationDate.toDate()).toString(), style: TextStyle(fontSize: detailFontSize))
+            Text(DateFormat.yMMMEd('ja').format(data.registrationDate.toDate()).toString(), style: TextStyle(fontSize: detailFontSize))
           ]
       ),
       Divider(color: Colors.grey[200]),
       Row(
           children: [
             SizedBox(width: labelWidth, child: const Text('最終更新日', style: TextStyle(fontSize: 14))),
-            Text(DateFormat.yMMMEd('ja').format(imorium.lastUpdatedDate.toDate()).toString(), style: TextStyle(fontSize: detailFontSize))
+            Text(DateFormat.yMMMEd('ja').format(data.lastUpdatedDate.toDate()).toString(), style: TextStyle(fontSize: detailFontSize))
           ]
       ),
       Divider(color: Colors.grey[200]),
-      Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(width: labelWidth, height: 120, child: const Text('メモ', style: TextStyle(fontSize: 14))),
-            SizedBox(width: memoWidth, child: Text(imorium.memo, maxLines: 30, overflow: TextOverflow.ellipsis))
-          ]
-      ),
+      if (dataKind != DataKind.diary)
+        Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: labelWidth, height: 120, child: const Text('メモ', style: TextStyle(fontSize: 14))),
+              SizedBox(width: memoWidth, child: Text(data.memo, maxLines: 30, overflow: TextOverflow.ellipsis))
+            ]
+        ),
     ],
   );
-  // double labelWidth = MediaQuery.of(context).size.width * 0.3;
-  // double memoWidth = MediaQuery.of(context).size.width * 0.6;
-  // Widget widget = Column(
-  //   crossAxisAlignment: CrossAxisAlignment.start,
-  //   children: [
-  //     if (dataKind == DataKind.creature || dataKind == DataKind.plant)
-  //       Column(
-  //           children: [
-  //             imgURL != ''
-  //                 ? Center(child: Container(width: 250, height: 200, decoration: BoxDecoration(shape: BoxShape.rectangle, image: DecorationImage(image: NetworkImage(imgURL), fit: BoxFit.cover))))
-  //                 : Center(child: Container(width: 250, height: 200, color: Colors.grey[200], child: const Center(child: Text('No Image')))),
-  //             const SizedBox(height: 15),
-  //             const Divider(),
-  //             Row(children: [SizedBox(width: labelWidth, child: const Text('名前', style: TextStyle(fontSize: 14))), Text(name)]),
-  //             const Divider(),
-  //             Row(children: [SizedBox(width: labelWidth, child: const Text('カテゴリ', style: TextStyle(fontSize: 14))), Text(category)]),
-  //             const Divider(),
-  //             Row(children: [SizedBox(width: labelWidth, child: const Text('種類', style: TextStyle(fontSize: 14))), Text(kinds)]),
-  //             const Divider(),
-  //           ]
-  //       ),
-  //     if (dataKind == DataKind.waterChange)
-  //       Column(
-  //         children: [
-  //           Row(children: [SizedBox(width: labelWidth, child: const Text('水交換量', style: TextStyle(fontSize: 14))), Text(amount)]),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //     if (dataKind == DataKind.feed)
-  //       Column(
-  //         children: [
-  //           Row(children: [SizedBox(width: labelWidth, child: const Text('餌やり量', style: TextStyle(fontSize: 14))), Text(amount)]),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //     if (dataKind == DataKind.temperature)
-  //       Column(
-  //         children: [
-  //           Row(children: [SizedBox(width: labelWidth, child: const Text('水温', style: TextStyle(fontSize: 14))), Text('${temperature.toString()}°C')]),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //     if (dataKind == DataKind.ph)
-  //       Column(
-  //         children: [
-  //           Row(children: [SizedBox(width: labelWidth, child: const Text('Ph', style: TextStyle(fontSize: 14))), Text(ph.toString())]),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //     if (dataKind == DataKind.calendar)
-  //       Column(
-  //         children: [
-  //           imgURL != ''
-  //               ? Center(child: Container(width: 250, height: 200, decoration: BoxDecoration(shape: BoxShape.rectangle, image: DecorationImage(image: NetworkImage(imgURL), fit: BoxFit.cover))))
-  //               : Center(child: Container(width: 250, height: 200, color: Colors.grey[200], child: const Center(child: Text('No Image')))),
-  //           const SizedBox(height: 15),
-  //           const Divider(),
-  //           Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [SizedBox(width: labelWidth, height: 120, child: const Text('日記', style: TextStyle(fontSize: 14))), SizedBox(width: memoWidth, child: Text(memo, maxLines: 30, overflow: TextOverflow.ellipsis))]
-  //           ),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //     Row(children: [SizedBox(width: labelWidth, child: const Text('追加日', style: TextStyle(fontSize: 14))), Text(DateFormat.yMMMEd('ja').format(registrationDate).toString())]),
-  //     const Divider(),
-  //     Row(children: [SizedBox(width: labelWidth, child: const Text('最新更新日', style: TextStyle(fontSize: 14))), Text(DateFormat.yMMMEd('ja').format(lastUpdatedDate).toString())]),
-  //     const Divider(),
-  //     if (dataKind != DataKind.calendar)
-  //       Column(
-  //         children: [
-  //           Row(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: [SizedBox(width: labelWidth, height: 120, child: const Text('メモ', style: TextStyle(fontSize: 14))), SizedBox(width: memoWidth, child: Text(memo, maxLines: 30, overflow: TextOverflow.ellipsis))]
-  //           ),
-  //           const Divider(),
-  //         ],
-  //       ),
-  //   ],
-  // );
-
   return widget;
 }

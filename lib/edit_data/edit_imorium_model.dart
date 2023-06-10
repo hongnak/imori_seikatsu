@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddImoriumModel extends ChangeNotifier {
+class EditImoriumModel extends ChangeNotifier {
   String? name;
   String? size;
   String? memo;
@@ -52,33 +52,28 @@ class AddImoriumModel extends ChangeNotifier {
       imgURL = await task.ref.getDownloadURL();
     }
 
-    try {
-      await doc.set({
-        'userID' : userID,
-        'name' : name,
-        'size' : size,
-        'memo' : memo ?? '記録なし',
-        'imgURL' : imgURL ?? '',
-        'waterChangeReminder' : 0,
-        'feedReminder' : 0,
-        'cleanReminder' : 0,
-        'addWaterReminder' : 0,
-        'sprayReminder' : 0,
-        'filterExchangeReminder' : 0,
-        'registrationDate' : myDateTime,
-        'lastUpdatedDate' : myDateTime,
-        'lastWaterChangeDate' : defaultDateTime,
-        'lastFeedDate' : defaultDateTime,
-        'lastCleanDate' : defaultDateTime,
-        'lastAddWaterDate' : defaultDateTime,
-        'lastSprayDate' : defaultDateTime,
-        'lastFilterExchangeDate' : defaultDateTime,
-      });
-    } catch (e) {
-      print(e);
-    } finally {
-      print('imorium added');
-    }
+    await doc.set({
+      'userID' : userID,
+      'name' : name,
+      'size' : size,
+      'memo' : memo ?? '記録なし',
+      'imgURL' : imgURL ?? '',
+      'waterChangeReminder' : 0,
+      'feedReminder' : 0,
+      'cleanReminder' : 0,
+      'addWaterReminder' : 0,
+      'sprayReminder' : 0,
+      'filterExchangeReminder' : 0,
+      'registrationDate' : myDateTime,
+      'lastUpdatedDate' : myDateTime,
+      'lastWaterChangeDate' : defaultDateTime,
+      'lastFeedDate' : defaultDateTime,
+      'lastCleanDate' : defaultDateTime,
+      'lastAddWaterDate' : defaultDateTime,
+      'lastSprayDate' : defaultDateTime,
+      'lastFilterExchangeDate' : defaultDateTime,
+    });
+
     notifyListeners();
   }
 }

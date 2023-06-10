@@ -7,4 +7,5 @@ class Ph {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'ph';
 }

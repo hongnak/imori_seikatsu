@@ -7,4 +7,5 @@ class Temperature {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'temperature';
 }

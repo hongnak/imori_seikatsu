@@ -7,4 +7,5 @@ class Diary {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'diary';
 }

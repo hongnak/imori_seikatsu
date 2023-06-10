@@ -9,7 +9,6 @@ import 'package:imori_seikatsu/domain/waterChange.dart';
 import '../domain/imorium.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class MyTankDetailModel extends ChangeNotifier {
   MyTankDetailModel({Key? key, required this.imorium});
@@ -39,7 +38,7 @@ class MyTankDetailModel extends ChangeNotifier {
       final user = FirebaseAuth.instance.currentUser;
       userID = user?.uid;
     }
-    List<String> collectionNames = ['creature', 'plant', 'waterChange', 'feed', 'temperature', 'ph', 'calendar'];
+    List<String> collectionNames = ['creature', 'plant', 'waterChange', 'feed', 'temperature', 'ph', 'diary'];
     List<QuerySnapshot> snapshots = [];
     final DocumentReference documentReference = FirebaseFirestore.instance.collection('imorium').doc(imorium.id);
 
@@ -63,8 +62,8 @@ class MyTankDetailModel extends ChangeNotifier {
 
     final List<Plant> plants = snapshots[1].docs.map((DocumentSnapshot document) {
       Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-      final String name = data['name'];
-      final String category = data['category'];
+      final String name = data['kind'] ?? '';
+      final String category = data['category'] ?? '';
       final String kind = data['kind'];
       final String imgURL = data['imgURL'];
       final String id = document.id;
@@ -138,7 +137,6 @@ class MyTankDetailModel extends ChangeNotifier {
     this.temperatures = temperatures;
     this.ph = ph;
     this.diaries = diaries;
-
     notifyListeners();
   }
 

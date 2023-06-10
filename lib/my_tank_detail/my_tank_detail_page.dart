@@ -52,7 +52,7 @@ class MyTankDetailPage extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           dataKind = DataKind.imorium;
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(imorium: imorium)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', tankID: imorium.id), fullscreenDialog: true));
                         },
                         child: Container(
                             width: imgWidth,
@@ -64,7 +64,7 @@ class MyTankDetailPage extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           dataKind = DataKind.imorium;
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(imorium: imorium)));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', tankID: imorium.id), fullscreenDialog: true));
                         },
                         child: Container(
                             width: imgWidth,
@@ -76,19 +76,19 @@ class MyTankDetailPage extends StatelessWidget {
                         padding: const EdgeInsets.all(28.0),
                         child: Column(
                           children: [
-                            creatureAndPlantContainer(creatures, '生き物'),
+                            creatureAndPlantContainer(creatures, '生き物', context, imorium, model),
                             Divider(color: Colors.grey[200]),
-                            creatureAndPlantContainer(plants, '水草'),
+                            creatureAndPlantContainer(plants, '水草', context, imorium, model),
                             Divider(color: Colors.grey[200]),
-                            dataListWidget(model, context, waterChanges, '水交換', 0),
+                            dataListWidget(model, context, waterChanges, '水交換', 0, imorium),
                             Divider(color: Colors.grey[200]),
-                            dataListWidget(model, context, feeds, '餌やり', 1),
+                            dataListWidget(model, context, feeds, '餌やり', 1, imorium),
                             Divider(color: Colors.grey[200]),
-                            dataListWidget(model, context, temperatures, '水温', 2),
+                            dataListWidget(model, context, temperatures, '水温', 2, imorium),
                             Divider(color: Colors.grey[200]),
-                            dataListWidget(model, context, ph, 'Ph', 2),
+                            dataListWidget(model, context, ph, 'ph', 2, imorium),
                             Divider(color: Colors.grey[200]),
-                            dataListWidget(model, context, diaries, '日記', 3),
+                            dataListWidget(model, context, diaries, '日記', 3, imorium),
                           ],
                         ),
                       ),

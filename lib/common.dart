@@ -11,3 +11,4 @@ enum DataKind {
 }
 
 DataKind dataKind = DataKind.imorium;
+int iconIndex = 0;

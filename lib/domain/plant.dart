@@ -10,4 +10,5 @@ class Plant {
   String id;
   Timestamp registrationDate;
   Timestamp lastUpdatedDate;
+  String collectionName = 'plant';
 }
