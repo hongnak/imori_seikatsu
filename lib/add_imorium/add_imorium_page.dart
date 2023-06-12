@@ -31,7 +31,7 @@ class AddImoriumPage extends StatelessWidget {
                             const SizedBox(height: 16.0),
                             enterMemoWidget(model, 'メモ', '入力してください'),
                             const SizedBox(height: 16.0),
-                            enterButtonWidget(model, context, '追加する', 'none', 'none')
+                            enterButtonWidget(model, context, '確定', 'none', 'none')
                           ],
                         )
                     ),

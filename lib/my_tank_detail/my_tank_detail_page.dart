@@ -52,7 +52,7 @@ class MyTankDetailPage extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           dataKind = DataKind.imorium;
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', tankID: imorium.id), fullscreenDialog: true));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', imorium: imorium), fullscreenDialog: true));
                         },
                         child: Container(
                             width: imgWidth,
@@ -62,9 +62,9 @@ class MyTankDetailPage extends StatelessWidget {
                       )
                           :
                       InkWell(
-                        onTap: () {
+                        onTap: () async {
                           dataKind = DataKind.imorium;
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', tankID: imorium.id), fullscreenDialog: true));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MyDataDetailPage(data: imorium, label: '水槽', imorium: imorium), fullscreenDialog: true));
                         },
                         child: Container(
                             width: imgWidth,

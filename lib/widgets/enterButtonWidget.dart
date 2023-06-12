@@ -1,14 +1,21 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../common.dart';
 
 Widget enterButtonWidget(model, BuildContext context, String buttonText, String id, String collectionName) {
+  var navigator = Navigator.of(context);
   Widget widget = Center(
     child: ElevatedButton(
       onPressed: () async {
         try {
           model.startLoading();
           await model.addOrEditData(id, collectionName);
-          Navigator.of(context).pop(true);
+          if (mode == Mode.edit) {
+            navigator.pop(true);
+            navigator.pop(true);
+          } else {
+            navigator.pop(true);
+          }
         } catch (e) {
           if (kDebugMode) {
             print(e);

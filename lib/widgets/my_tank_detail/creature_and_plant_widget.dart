@@ -18,6 +18,7 @@ Widget creatureAndPlantContainer(List<dynamic> dataList, String label, BuildCont
           Text(label, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           IconButton(
             onPressed: () async {
+              mode = Mode.add;
               switch (label) {
                 case '生き物':
                   dataKind = DataKind.creature;
@@ -69,17 +70,19 @@ Widget creatureAndPlantContainer(List<dynamic> dataList, String label, BuildCont
                         switch (label)  {
                           case '生き物':
                             dataKind = DataKind.creature;
-                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                            unit = '匹数';
+                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, imorium: imorium), fullscreenDialog: true));
                             if (deleted != null && deleted) {
-                              scaffoldMessenger.showSnackBar(snackBar('削除しました'));
+                              scaffoldMessenger.showSnackBar(snackBar('更新しました'));
                             }
                             model.fetchData();
                             break;
                           case '水草':
                             dataKind = DataKind.plant;
-                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                            unit = '株数';
+                            final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, imorium: imorium), fullscreenDialog: true));
                             if (deleted != null && deleted) {
-                              scaffoldMessenger.showSnackBar(snackBar('削除しました'));
+                              scaffoldMessenger.showSnackBar(snackBar('更新しました'));
                             }
                             model.fetchData();
                             break;

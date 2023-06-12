@@ -42,7 +42,7 @@ class MyDataListPage extends StatelessWidget {
                       default:
                         break;
                     }
-                    Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, imorium: imorium), fullscreenDialog: true));
                     //setDataKind(title);
                     //Navigator.push(context, MaterialPageRoute(builder: (context) => DetailDataPage(data: dataList[i], tankName: tankName, kind: title, tankID: tankID)));
                   },

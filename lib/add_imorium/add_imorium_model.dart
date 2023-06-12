@@ -57,7 +57,7 @@ class AddImoriumModel extends ChangeNotifier {
         'userID' : userID,
         'name' : name,
         'size' : size,
-        'memo' : memo ?? '記録なし',
+        'memo' : memo,
         'imgURL' : imgURL ?? '',
         'waterChangeReminder' : 0,
         'feedReminder' : 0,

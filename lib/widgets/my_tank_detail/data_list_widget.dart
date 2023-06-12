@@ -103,9 +103,9 @@ Widget dataListWidget(model, BuildContext context, List<dynamic> dataList, Strin
                       default:
                         break;
                     }
-                    final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, tankID: imorium.id), fullscreenDialog: true));
+                    final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (_) => MyDataDetailPage(data: dataList[i], label: label, imorium: imorium), fullscreenDialog: true));
                     if (deleted != null && deleted) {
-                      scaffoldMessenger.showSnackBar(snackBar('削除しました'));
+                      scaffoldMessenger.showSnackBar(snackBar('更新しました'));
                     }
                     model.fetchData();
                     },

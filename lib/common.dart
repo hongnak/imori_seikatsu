@@ -10,5 +10,16 @@ enum DataKind {
   diary
 }
 
+enum Mode {
+  normal,
+  add,
+  edit,
+  delete
+}
+
 DataKind dataKind = DataKind.imorium;
+Mode mode = Mode.normal;
 int iconIndex = 0;
+String unit = '';
+String collectionName = '';
+

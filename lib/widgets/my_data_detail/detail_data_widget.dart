@@ -70,6 +70,12 @@ Widget detailDataWidget(dynamic data, BuildContext context, String label) {
                   Text(data.kind, style: const TextStyle(fontSize: 14.0))]
             ),
             Divider(color: Colors.grey[200]),
+            Row(
+                children: [
+                  SizedBox(width: labelWidth, child: Text(unit, style: const TextStyle(fontSize: 14))),
+                  Text(data.amount.toString(), style: const TextStyle(fontSize: 14.0))]
+            ),
+            Divider(color: Colors.grey[200]),
           ],
         ),
       if (dataKind == DataKind.waterChange || dataKind == DataKind.feed)

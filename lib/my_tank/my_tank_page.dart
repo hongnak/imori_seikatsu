@@ -43,7 +43,7 @@ class MyTankPage extends StatelessWidget {
                 onTap: () async {
                   final bool? deleted = await Navigator.push(context, MaterialPageRoute(builder: (context) => MyTankDetailPage(imorium: imorium)));
                   if (deleted != null && deleted) {
-                    final snackBar = SnackBar(backgroundColor: Colors.green, content: Text('水槽を削除しました'));
+                    final snackBar = SnackBar(backgroundColor: Colors.green, content: Text('更新しました'));
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   }
                   model.fetchImoriumList();

@@ -57,7 +57,8 @@ class MyTankDetailModel extends ChangeNotifier {
       final String memo = data['memo'] ?? '';
       final Timestamp registrationDate = data['registrationDate'];
       final Timestamp lastUpdatedDate = data['lastUpdatedDate'];
-      return Creature(name, category, kind, imgURL, memo, id, registrationDate, lastUpdatedDate);
+      final dynamic amount = data['amount'];
+      return Creature(name, category, kind, imgURL, memo, id, registrationDate, lastUpdatedDate, amount);
     }).toList();
 
     final List<Plant> plants = snapshots[1].docs.map((DocumentSnapshot document) {
@@ -70,7 +71,8 @@ class MyTankDetailModel extends ChangeNotifier {
       final String memo = data['memo'] ?? '';
       final Timestamp registrationDate = data['registrationDate'];
       final Timestamp lastUpdatedDate = data['lastUpdatedDate'];
-      return Plant(name, category, kind, imgURL, memo, id, registrationDate, lastUpdatedDate);
+      final dynamic amount = data['amount'];
+      return Plant(name, category, kind, imgURL, memo, id, registrationDate, lastUpdatedDate, amount);
     }).toList();
 
     final List<WaterChange> waterChanges = snapshots[2].docs.map((DocumentSnapshot document) {

@@ -2,15 +2,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:imori_seikatsu/common.dart';
+import 'package:imori_seikatsu/edit_imorium/edit_imorium_page.dart';
 import 'package:imori_seikatsu/my_data_detail/my_data_detail_model.dart';
+import '../domain/imorium.dart';
+import '../edit_data/edit_data_page.dart';
 import '../widgets/my_data_detail/detail_data_widget.dart';
 import 'package:provider/provider.dart';
 
 class MyDataDetailPage extends StatelessWidget {
-  const MyDataDetailPage({super.key, required this.data, required this.label, required this.tankID});
+  const MyDataDetailPage({super.key, required this.data, required this.label, required this.imorium});
   final dynamic data;
   final String label;
-  final String tankID;
+  final Imorium imorium;
+  // final String tankID;
+  // final DateTime lastWaterChangeDate;
+  // final DateTime lastFeedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +39,18 @@ class MyDataDetailPage extends StatelessWidget {
                             return SimpleDialog(
                               alignment: Alignment.center,
                               children: [
-                                const SimpleDialogOption(
-                                  child: Center(child: Text('編集する', style: TextStyle(fontSize: 18.0, color: Colors.blueAccent))),
+                                SimpleDialogOption(
+                                  child: const Center(child: Text('編集する', style: TextStyle(fontSize: 18.0, color: Colors.blueAccent))),
+                                  onPressed: () async {
+                                    mode = Mode.edit;
+                                    if (dataKind == DataKind.imorium) {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditImoriumPage(imorium: imorium), fullscreenDialog: true));
+                                    } else {
+                                      Navigator.of(context).pop();
+                                      Navigator.of(context).push(MaterialPageRoute(builder: (_) => EditDataPage(label: label, tankID: imorium.id, data: data, lastWaterChangeDate: imorium.lastWaterChangeDate.toDate(), lastFeedDate: imorium.lastFeedDate.toDate()), fullscreenDialog: true));
+                                    }
+                                  },
                                 ),
                                 const SimpleDialogOption(
                                   child: Center(child: Text('共有する', style: TextStyle(fontSize: 18.0, color: Colors.blueAccent))),
@@ -42,6 +58,7 @@ class MyDataDetailPage extends StatelessWidget {
                                 SimpleDialogOption(
                                   child: const Center(child: Text('削除する', style: TextStyle(fontSize: 18.0, color: Colors.red))),
                                   onPressed: () {
+                                    mode = Mode.delete;
                                     Navigator.of(context).pop();
                                     showDialog(
                                         context: context,
@@ -60,7 +77,7 @@ class MyDataDetailPage extends StatelessWidget {
                                                   onPressed: () async {
                                                     final navigator = Navigator.of(context);
                                                     try {
-                                                      await model.deleteData(tankID, data.id, data.collectionName);
+                                                      await model.deleteData(imorium.id, data.id, data.collectionName);
                                                       if (dataKind == DataKind.imorium) {
                                                         navigator.pop(true);
                                                         navigator.pop(true);

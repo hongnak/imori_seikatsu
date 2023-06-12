@@ -26,7 +26,7 @@ class MyTankModel extends ChangeNotifier {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
         final String name = data['name'];
         final String size = data['size'];
-        final String memo = data['memo'];
+        final String memo = data['memo'] ?? '';
         final String imgURL = data['imgURL'];
         final String id = document.id;
         final Timestamp registrationDate = data['registrationDate'];

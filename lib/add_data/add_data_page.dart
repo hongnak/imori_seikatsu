@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:imori_seikatsu/add_data/add_data_model.dart';
 import 'package:imori_seikatsu/common.dart';
-import 'package:imori_seikatsu/widgets/enter_button_widget.dart';
+//import 'package:imori_seikatsu/widgets/enter_button_widget.dart';
 import 'package:imori_seikatsu/widgets/enter_kind_widget.dart';
 import 'package:imori_seikatsu/widgets/enter_memo_widget.dart';
 import 'package:imori_seikatsu/widgets/enter_name_widget.dart';
@@ -11,6 +11,7 @@ import 'package:imori_seikatsu/widgets/select_date_widget.dart';
 import 'package:imori_seikatsu/widgets/upload_image_widget.dart';
 import 'package:provider/provider.dart';
 import '../domain/imorium.dart';
+import '../widgets/enterButtonWidget.dart';
 import '../widgets/select_amount_widget.dart';
 
 class AddDataPage extends StatelessWidget {
@@ -29,7 +30,7 @@ class AddDataPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: ChangeNotifierProvider<AddDataModel>(
-        create: (_) => AddDataModel(lastWaterChangeDate: lastWaterChangeDate, lastFeedDate: lastFeedDate),
+        create: (_) => AddDataModel(lastWaterChangeDate: lastWaterChangeDate, lastFeedDate: lastFeedDate, label: label, tankName: imorium.name),
         child: SingleChildScrollView(
           child: Consumer<AddDataModel>(builder: (context, model, child) {
             const String entryStr = '入力してください';
