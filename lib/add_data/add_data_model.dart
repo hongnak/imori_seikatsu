@@ -79,15 +79,24 @@ class AddDataModel extends ChangeNotifier {
   }
 
   Future addOrEditData(String id, String collectionName) async {
-    final eventDoc = FirebaseFirestore.instance.collection('event').doc();
-    final tankDoc = FirebaseFirestore.instance.collection('imorium').doc(id);
-    final doc = FirebaseFirestore.instance.collection('imorium').doc(id).collection(collectionName).doc();
-    String? imgURL;
+
+    final String date = myDateTime.year.toString() + myDateTime.month.toString() + myDateTime.day.toString();
 
     if (FirebaseAuth.instance.currentUser != null) {
       final user = FirebaseAuth.instance.currentUser;
       userID = user?.uid;
     }
+
+    final tankDoc = FirebaseFirestore.instance.collection('imorium').doc(id);
+    final doc = FirebaseFirestore.instance.collection('imorium').doc(id).collection(collectionName).doc();
+    final eventDoc = FirebaseFirestore.instance.collection('calendar').doc(userID).collection('event').doc(date);
+    final DocumentSnapshot eventDocSnapshot = await eventDoc.get();
+    Map<String, dynamic> data = eventDocSnapshot.data() as Map<String, dynamic>;
+    List<String> tankNameList = data['tankName'];
+    List<String> tankIDList = data['tankID'];
+    List<String> eventList = data['event'];
+
+    String? imgURL;
 
     switch (dataKind) {
       case DataKind.creature:
@@ -153,14 +162,23 @@ class AddDataModel extends ChangeNotifier {
         //ToDo: 水足しとかお掃除とかのlastDateを追加
       });
 
-      await eventDoc.set({
-        'tankID' : id,
-        'tankName' : tankName,
-        'docID' : doc.id,
-        'userID' : userID,
-        'event' : FieldValue.arrayUnion(['$tankNameに$labelを記録しました']),
-        'registrationDate' : myDateTime,
-      });
+      if (!eventDocSnapshot.exists) {
+        await eventDoc.set({
+          'tankID' : FieldValue.arrayUnion([id]),
+          'tankName' : FieldValue.arrayUnion([tankName]),
+          'docID' : FieldValue.arrayUnion([doc.id]),
+          'userID' : userID,
+          'event' : FieldValue.arrayUnion(['$tankNameに$labelを記録しました']),
+          'registrationDate' : FieldValue.arrayUnion([myDateTime]),
+        });
+      } else {
+        await eventDoc.update({
+          'tankID' : FieldValue.arrayUnion([id]),
+          'tankName' : FieldValue.arrayUnion([tankName]),
+          'docID' : FieldValue.arrayUnion([doc.id]),
+          'event' : FieldValue.arrayUnion(['$tankNameに$labelを記録しました']),
+        });
+      }
 
     } catch (e) {
       if (kDebugMode) {

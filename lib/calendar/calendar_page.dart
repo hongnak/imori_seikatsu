@@ -19,14 +19,14 @@ class CalendarPage extends StatelessWidget {
           DateTime focusedDay = model.focusedDay;
           DateTime? selectedDay = model.selectedDay;
           selectedDay = focusedDay;
-          Map<DateTime, List<dynamic>> _eventsList = {} ;
+          Map<DateTime, List<dynamic>> eventsList = {} ;
 
           if (events == null) {
             return const Center(child: CircularProgressIndicator());
           }
 
           for (int i = 0; i < events.length; i++) {
-            _eventsList.addAll({
+            eventsList.addAll({
               events[i].registrationDate.toDate() : events[i].event
             });
           }
@@ -38,7 +38,7 @@ class CalendarPage extends StatelessWidget {
           final _events = LinkedHashMap<DateTime, List>(
             equals: isSameDay,
             hashCode: getHashCode,
-          )..addAll(_eventsList);
+          )..addAll(eventsList);
 
           List getEvent(DateTime day) {
             return _events[day] ?? [];
@@ -60,7 +60,7 @@ class CalendarPage extends StatelessWidget {
                 ),
                 ListView(
                   shrinkWrap: true,
-                  children: getEvent(selectedDay!).map((event) => ListTile(
+                  children: getEvent(selectedDay).map((event) => ListTile(
                       title: Text(event.toString()))
                   ).toList(),
                 )

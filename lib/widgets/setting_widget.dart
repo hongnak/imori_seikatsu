@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_email_sender/flutter_email_sender.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 Widget settingWidget(model, BuildContext context) {
   const String shareText = 'newt_life';
@@ -52,8 +54,9 @@ Widget settingWidget(model, BuildContext context) {
           leading: const Icon(Icons.ios_share),
           title: const Text('友達に教える'),
           trailing: arrowIcon,
-          onTap: () {
-            // Share.share(shareText);
+          onTap: () async {
+            await Share.share(shareText);
+
           }
       ),
       const Divider(),
@@ -62,12 +65,12 @@ Widget settingWidget(model, BuildContext context) {
         title: const Text('利用規約'),
         trailing: arrowIcon,
         onTap: () async {
-          // Uri url = Uri(scheme: 'https', host: 'newt-life.web.app', path: '/terms.html');
-          // if (await canLaunchUrl(url)) {
-          //   await launchUrl(url);
-          // } else {
-          //   throw 'このURLにはアクセスできません';
-          // }
+          Uri url = Uri(scheme: 'https', host: 'imori-seikatsu.web.app', path: '/terms.html');
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url);
+          } else {
+            throw 'このURLにはアクセスできません';
+          }
         },
       ),
       const Divider(),
@@ -76,12 +79,12 @@ Widget settingWidget(model, BuildContext context) {
         title: const Text('プライバシーポリシー'),
         trailing: arrowIcon,
         onTap: () async {
-          // Uri url = Uri(scheme: 'https', host: 'newt-life.web.app', path: '/privacy-policy.html');
-          // if (await canLaunchUrl(url)) {
-          //   await launchUrl(url);
-          // } else {
-          //   throw 'このURLにはアクセスできません';
-          // }
+          Uri url = Uri(scheme: 'https', host: 'imori-seikatsu.web.app', path: '/privacy-policy.html');
+          if (await canLaunchUrl(url)) {
+            await launchUrl(url);
+          } else {
+            throw 'このURLにはアクセスできません';
+          }
         },
       ),
       const Divider(),

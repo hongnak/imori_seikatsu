@@ -21,15 +21,15 @@ class CalendarModel extends ChangeNotifier {
       userID = user?.uid;
     }
     if (userID != null) {
-      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('event').where('userID', whereIn: [userID]).get();
+      QuerySnapshot snapshot = await FirebaseFirestore.instance.collection('calendar').doc(userID).collection('event').get();
       final List<Event> events;
       events = snapshot.docs.map((DocumentSnapshot document) {
         Map<String, dynamic> data = document.data() as Map<String, dynamic>;
-        final String tankID = data['tankID'];
-        final String tankName = data['tankName'] ?? 'unknown';
-        final String docID = data['docID'];
+        final List<String> tankID = data['tankID'] ?? [];
+        final List<String> tankName = data['tankName'] ?? [];
+        final List<String> docID = data['docID'] ?? [];
         final String userID = data['userID'];
-        final List<dynamic> event = data['event'];
+        final List<dynamic> event = data['event'] ?? [];
         final Timestamp registrationDate = data['registrationDate'];
         return Event(tankID, tankName, docID, userID, event, registrationDate);
       }).toList();
