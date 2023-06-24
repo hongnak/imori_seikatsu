@@ -27,11 +27,15 @@ class AddDataModel extends ChangeNotifier {
   final picker = ImagePicker();
   File? imageFile;
   bool isLoading = false;
+  List<dynamic> existingTankIDList = [];
+  List<dynamic> existingTankNameList = [];
+  List<dynamic> existingEventList = [];
+  List<dynamic> existingDocIDList = [];
 
   Future pickImage(BuildContext context) async {
     double imgWidth = MediaQuery.of(context).size.width * 0.9;
     double imgHeight = MediaQuery.of(context).size.height * 0.4;
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 50, maxHeight: imgHeight, maxWidth: imgWidth);
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery, imageQuality: 80, maxHeight: imgHeight, maxWidth: imgWidth);
     if (pickedFile != null) {
       imageFile = File(pickedFile.path);
       notifyListeners();
@@ -79,7 +83,6 @@ class AddDataModel extends ChangeNotifier {
   }
 
   Future addOrEditData(String id, String collectionName) async {
-
     final String date = myDateTime.year.toString() + myDateTime.month.toString() + myDateTime.day.toString();
 
     if (FirebaseAuth.instance.currentUser != null) {
@@ -89,13 +92,6 @@ class AddDataModel extends ChangeNotifier {
 
     final tankDoc = FirebaseFirestore.instance.collection('imorium').doc(id);
     final doc = FirebaseFirestore.instance.collection('imorium').doc(id).collection(collectionName).doc();
-    final eventDoc = FirebaseFirestore.instance.collection('calendar').doc(userID).collection('event').doc(date);
-    final DocumentSnapshot eventDocSnapshot = await eventDoc.get();
-    Map<String, dynamic> data = eventDocSnapshot.data() as Map<String, dynamic>;
-    List<String> tankNameList = data['tankName'];
-    List<String> tankIDList = data['tankID'];
-    List<String> eventList = data['event'];
-
     String? imgURL;
 
     switch (dataKind) {
@@ -159,26 +155,30 @@ class AddDataModel extends ChangeNotifier {
         if (dataKind == DataKind.waterChange && myDateTime.isAfter(lastWaterChangeDate)) 'lastWaterChangeDate' : myDateTime,
         if (dataKind == DataKind.feed && myDateTime.isAfter(lastFeedDate)) 'lastFeedDate' : myDateTime,
         'lastUpdatedDate' : DateTime.now(),
-        //ToDo: 水足しとかお掃除とかのlastDateを追加
       });
 
-      if (!eventDocSnapshot.exists) {
-        await eventDoc.set({
-          'tankID' : FieldValue.arrayUnion([id]),
-          'tankName' : FieldValue.arrayUnion([tankName]),
-          'docID' : FieldValue.arrayUnion([doc.id]),
-          'userID' : userID,
-          'event' : FieldValue.arrayUnion(['$tankNameに$labelを記録しました']),
-          'registrationDate' : FieldValue.arrayUnion([myDateTime]),
-        });
-      } else {
-        await eventDoc.update({
-          'tankID' : FieldValue.arrayUnion([id]),
-          'tankName' : FieldValue.arrayUnion([tankName]),
-          'docID' : FieldValue.arrayUnion([doc.id]),
-          'event' : FieldValue.arrayUnion(['$tankNameに$labelを記録しました']),
-        });
-      }
+      final String event = '$tankNameに$labelを記録しました';
+      final eventDocRef = FirebaseFirestore.instance.collection('calendar').doc(userID!).collection('event').doc(date);
+      final eventDocSnapshot = await eventDocRef.get();
+      final data = eventDocSnapshot.exists ? eventDocSnapshot.data() : null;
+
+      existingTankIDList = data?['tankIDList'] ?? [];
+      existingTankNameList = data?['tankNameList'] ?? [];
+      existingEventList = data?['eventList'] ?? [];
+      existingDocIDList = data?['docIDList'] ?? [];
+      final List<String> updatedTankIDList = List.from(existingTankIDList)..add(id);
+      final List<String> updatedTankNameList = List.from(existingTankNameList)..add(tankName);
+      final List<String> updatedEventList = List.from(existingEventList)..add(event);
+      final List<String> updatedDocIDList = List.from(existingDocIDList)..add(doc.id);
+
+      await eventDocRef.set({
+        'tankIDList' : updatedTankIDList,
+        'tankNameList' : updatedTankNameList,
+        'eventList' : updatedEventList,
+        'docIDList' : updatedDocIDList,
+        'userID' : userID,
+        'registrationDate' : myDateTime
+      });
 
     } catch (e) {
       if (kDebugMode) {

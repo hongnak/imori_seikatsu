@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -57,7 +58,7 @@ class AddImoriumModel extends ChangeNotifier {
         'userID' : userID,
         'name' : name,
         'size' : size,
-        'memo' : memo,
+        'memo' : memo ?? '',
         'imgURL' : imgURL ?? '',
         'waterChangeReminder' : 0,
         'feedReminder' : 0,
@@ -75,9 +76,13 @@ class AddImoriumModel extends ChangeNotifier {
         'lastFilterExchangeDate' : defaultDateTime,
       });
     } catch (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     } finally {
-      print('imorium added');
+      if (kDebugMode) {
+        print('imorium added');
+      }
     }
     notifyListeners();
   }

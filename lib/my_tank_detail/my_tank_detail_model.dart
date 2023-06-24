@@ -34,6 +34,19 @@ class MyTankDetailModel extends ChangeNotifier {
   }
 
   void fetchData() async {
+    // if (FirebaseAuth.instance.currentUser != null) {
+    //   final user = FirebaseAuth.instance.currentUser;
+    //   userID = user?.uid;
+    // }
+    // List<String> collectionNames = ['creature', 'plant', 'waterChange', 'feed', 'temperature', 'ph', 'diary'];
+    // List<QuerySnapshot> snapshots = [];
+    // final DocumentReference documentReference = FirebaseFirestore.instance.collection('imorium').doc(imorium.id);
+    //
+    // for(int i = 0; i < collectionNames.length; i++) {
+    //   final QuerySnapshot snapshot = await documentReference.collection(collectionNames[i]).get();
+    //   snapshots.add(snapshot);
+    // }
+
     if (FirebaseAuth.instance.currentUser != null) {
       final user = FirebaseAuth.instance.currentUser;
       userID = user?.uid;
@@ -42,8 +55,11 @@ class MyTankDetailModel extends ChangeNotifier {
     List<QuerySnapshot> snapshots = [];
     final DocumentReference documentReference = FirebaseFirestore.instance.collection('imorium').doc(imorium.id);
 
+    // Increment the number of reads for the current document
+    documentReference.update({'reads': FieldValue.increment(1)});
+
     for(int i = 0; i < collectionNames.length; i++) {
-      final QuerySnapshot snapshot = await documentReference.collection(collectionNames[i]).get(const GetOptions(source: Source.cache));
+      final QuerySnapshot snapshot = await documentReference.collection(collectionNames[i]).get();
       snapshots.add(snapshot);
     }
 

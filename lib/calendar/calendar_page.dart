@@ -27,7 +27,7 @@ class CalendarPage extends StatelessWidget {
 
           for (int i = 0; i < events.length; i++) {
             eventsList.addAll({
-              events[i].registrationDate.toDate() : events[i].event
+              events[i].registrationDate.toDate() : events[i].eventList
             });
           }
 
@@ -43,6 +43,7 @@ class CalendarPage extends StatelessWidget {
           List getEvent(DateTime day) {
             return _events[day] ?? [];
           }
+
           return Scaffold(
             body: Column(
               children: [
@@ -58,11 +59,14 @@ class CalendarPage extends StatelessWidget {
                   },
                   eventLoader: getEvent
                 ),
+                const SizedBox(height: 15.0),
                 ListView(
                   shrinkWrap: true,
-                  children: getEvent(selectedDay).map((event) => ListTile(
-                      title: Text(event.toString()))
-                  ).toList(),
+                  children: getEvent(selectedDay).map((event) => Card(
+                      child: ListTile(
+                          title: Text(event.toString()),
+                      )
+                  )).toList(),
                 )
               ],
             ),
@@ -71,5 +75,4 @@ class CalendarPage extends StatelessWidget {
       ),
     );
   }
-
 }
